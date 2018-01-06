@@ -10,20 +10,19 @@ package level2;
  */
 public class ReverseInt {
 	public int reverseInt(int n){
+		System.out.println("input>>"+n);
 		String num = String.valueOf(n);
 		String[] tempStr_arr = num.split("");
 		int[] num_arr = new int[tempStr_arr.length];
 		for(int i=0; i < tempStr_arr.length; i++){
 			num_arr[i] = Integer.parseInt(tempStr_arr[i]);
-			System.out.print(num_arr[i]+", ");
 		}
-		System.out.println();
 		qsort(num_arr, 0, num_arr.length - 1);
+		StringBuffer s_buf = new StringBuffer();
 		for(int i=0; i < num_arr.length; i++){
-			System.out.print(num_arr[i]+", ");
+			s_buf.append(num_arr[i]);
 		}
-		
-		return -1;
+		return Integer.parseInt(s_buf.toString());
 	}
 	
 	public void qsort(int[] n_arr, int s_idx, int e_idx){
@@ -48,8 +47,11 @@ public class ReverseInt {
 		if(e_idx > left) qsort(n_arr, left, e_idx);
 	}
 	
+	static String res = "";
 	public static void  main(String[] args){
-		ReverseInt ri = new ReverseInt();
-		System.out.println(ri.reverseInt(118372));
+		//ReverseInt ri = new ReverseInt();
+		//System.out.println(ri.reverseInt(118372));
+		Integer.toString(118372).chars().sorted().forEach(c -> res = res + Character.valueOf((char)c));
+		System.out.println(res);
 	}
 }
