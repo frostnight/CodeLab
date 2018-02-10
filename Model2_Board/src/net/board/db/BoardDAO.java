@@ -35,7 +35,6 @@ public class BoardDAO {
 		try{
 			pstmt = con.prepareStatement("SELECT COUNT(*) FROM BOARD");
 			rs = pstmt.executeQuery();
-			
 			if(rs.next()){
 				x = rs.getInt(1);
 			}
@@ -128,7 +127,6 @@ public class BoardDAO {
 	// 글 등록
 	public boolean boardInsert(BoardBean board){
 		int num = 0;
-		String sql = "";
 		int result = 0;
 		
 		try{
@@ -145,7 +143,7 @@ public class BoardDAO {
 			sb.append("BOARD_CONTENT, BOARD_FILE,BOARD_RE_REF,BOARD_RE_LEV,BOARD_RE_SEQ,BOARD_READCOUNT");
 			sb.append(",BOARD_DATE) values(?,?,?,?,?,?,?,?,?,?,sysdate)");
 			
-			pstmt = con.prepareStatement(sql);
+			pstmt = con.prepareStatement(sb.toString());
 			pstmt.setInt(1, num);
 			pstmt.setString(2, board.getBOARD_NAME());
 			pstmt.setString(3, board.getBOARD_PASS());
@@ -202,7 +200,7 @@ public class BoardDAO {
 			sb.append(" ,BOARD_FILE, BOARD_RE_REF, BOARD_RE_LEV, BOARD_RE_SEQ, BOARD_READCOUNT,BOARD_DATE)");
 			sb.append(" values(?,?,?,?,?,?,?,?,?,?, sysdate)");
 			
-			pstmt = con.prepareStatement(sql);
+			pstmt = con.prepareStatement(sb.toString());
 			pstmt.setInt(1, num);
 			pstmt.setString(2, board.getBOARD_NAME());
 			pstmt.setString(3, board.getBOARD_PASS());
@@ -216,6 +214,7 @@ public class BoardDAO {
 			pstmt.executeUpdate();
 			return num;
 		} catch(Exception ex){
+			ex.printStackTrace();
 			System.out.println("boardReply 에러:"+ex);
 		} finally{
 			if(rs!=null)try{rs.close();}catch(SQLException ex){}
@@ -226,7 +225,7 @@ public class BoardDAO {
 	
 	// 글 수정
 	public boolean boardModify(BoardBean modifyboard) throws Exception {
-		String sql = "update board set BOARD_SUBJECT = ?, BOARD_CONTENT = ? WHERE BOARD_NUM";
+		String sql = "update board set BOARD_SUBJECT = ?, BOARD_CONTENT = ? WHERE BOARD_NUM = ?";
 		
 		try{
 			pstmt = con.prepareStatement(sql);

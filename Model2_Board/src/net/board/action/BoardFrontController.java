@@ -19,7 +19,8 @@ public class BoardFrontController extends javax.servlet.http.HttpServlet
 		Action action = null;
 		if(command.equals("/BoardWrite.bo")){
 			forward = new ActionForward();
-			
+			forward.setRedirect(false);
+			forward.setPath("./board/qna_board_write.jsp");
 		} else if(command.equals("/BoardReplyAction.bo")){
 			action = new BoardReplyAction();
 			try{

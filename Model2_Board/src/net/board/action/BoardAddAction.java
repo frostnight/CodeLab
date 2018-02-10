@@ -18,16 +18,18 @@ public class BoardAddAction implements Action{
 		ActionForward forward = new ActionForward();
 		
 		String realFolder = "";
-		String saverFolder = "boardupload";
+		String saveFolder = "boardupload";
 		
 		int fileSize = 5 * 1024 * 1024;
 		
-		realFolder = request.getRealPath(saverFolder);
+		//realFolder = request.getRealPath(saveFolder);
+		realFolder = request.getSession().getServletContext().getRealPath(saveFolder);
+
 		boolean result = false;
 		
 		try{
 			MultipartRequest multi = null;
-			multi = new MultipartRequest(request, realFolder, fileSize, "euc-kr", new DefaultFileRenamePolicy());
+			multi = new MultipartRequest(request, realFolder, fileSize, "utf-8", new DefaultFileRenamePolicy());
 			
 			boarddata.setBOARD_NAME(multi.getParameter("BOARD_NAME"));
 			boarddata.setBOARD_PASS(multi.getParameter("BOARD_PASS"));
