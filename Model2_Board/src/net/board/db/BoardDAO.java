@@ -33,7 +33,7 @@ public class BoardDAO {
 		
 		int x = 0;
 		try{
-			pstmt = con.prepareStatement("SELECT COUNT(*) FROM BOARD");
+			pstmt = con.prepareStatement("SELECT COUNT(*) FROM MEMBERBOARD");
 			rs = pstmt.executeQuery();
 			if(rs.next()){
 				x = rs.getInt(1);
@@ -54,7 +54,7 @@ public class BoardDAO {
 		StringBuffer sb = new StringBuffer();
 		sb.append(" select * from (select rownum rnum, BOARD_NUM, BOARD_NAME,");
 		sb.append(" BOARD_SUBJECT, BOARD_CONTENT, BOARD_FILE, BOARD_RE_REF,BOARD_RE_LEV,");
-		sb.append(" BOARD_RE_SEQ, BOARD_READCOUNT, BOARD_DATE from (select * from board order by");
+		sb.append(" BOARD_RE_SEQ, BOARD_READCOUNT, BOARD_DATE from (select * from memberboard order by");
 		sb.append(" BOARD_RE_REF desc, BOARD_RE_SEQ asc)) where rnum >= ? and rnum <=?");
 		
 		List list = new ArrayList();
@@ -96,7 +96,7 @@ public class BoardDAO {
 		BoardBean board = null;
 		
 		try{
-			pstmt = con.prepareStatement("select * from board where BOARD_NUM = ?");
+			pstmt = con.prepareStatement("select * from memberboard where BOARD_NUM = ?");
 			pstmt.setInt(1, num);
 			
 			rs = pstmt.executeQuery();
@@ -130,7 +130,7 @@ public class BoardDAO {
 		int result = 0;
 		
 		try{
-			pstmt = con.prepareStatement("select max(board_num) from board");
+			pstmt = con.prepareStatement("select max(board_num) from memberboard");
 			rs = pstmt.executeQuery();
 			if(rs.next()){
 				num = rs.getInt(1) + 1;
@@ -139,7 +139,7 @@ public class BoardDAO {
 			}
 			
 			StringBuffer sb = new StringBuffer();
-			sb.append("insert into board(BOARD_NUM, BOARD_NAME, BOARD_PASS, BOARD_SUBJECT,");
+			sb.append("insert into memberboard(BOARD_NUM, BOARD_NAME, BOARD_PASS, BOARD_SUBJECT,");
 			sb.append("BOARD_CONTENT, BOARD_FILE,BOARD_RE_REF,BOARD_RE_LEV,BOARD_RE_SEQ,BOARD_READCOUNT");
 			sb.append(",BOARD_DATE) values(?,?,?,?,?,?,?,?,?,?,sysdate)");
 			
@@ -170,7 +170,7 @@ public class BoardDAO {
 	
 	//글 답변
 	public int boardReply(BoardBean board){
-		String board_max_sql = "select max(board_num) from board";
+		String board_max_sql = "select max(board_num) from memberboard";
 		String sql = "";
 		int num = 0;
 		int result = 0;
@@ -185,7 +185,7 @@ public class BoardDAO {
 			if(rs.next()) num = rs.getInt(1) + 1;
 			else num = 1;
 			
-			sql = "update board set BOARD_RE_SEQ=BOARD_RE_SEQ+1 where BOARD_RE_REF=? and BOARD_RE_SEQ > ?";
+			sql = "update memberboard set BOARD_RE_SEQ=BOARD_RE_SEQ+1 where BOARD_RE_REF=? and BOARD_RE_SEQ > ?";
 			
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, re_ref);
@@ -196,7 +196,7 @@ public class BoardDAO {
 			re_lev = re_lev +1;
 			
 			StringBuffer sb = new StringBuffer();
-			sb.append(" insert into board(BOARD_NUM, BOARD_NAME, BOARD_PASS, BOARD_SUBJECT, BOARD_CONTENT");
+			sb.append(" insert into memberboard(BOARD_NUM, BOARD_NAME, BOARD_PASS, BOARD_SUBJECT, BOARD_CONTENT");
 			sb.append(" ,BOARD_FILE, BOARD_RE_REF, BOARD_RE_LEV, BOARD_RE_SEQ, BOARD_READCOUNT,BOARD_DATE)");
 			sb.append(" values(?,?,?,?,?,?,?,?,?,?, sysdate)");
 			
@@ -225,7 +225,7 @@ public class BoardDAO {
 	
 	// 글 수정
 	public boolean boardModify(BoardBean modifyboard) throws Exception {
-		String sql = "update board set BOARD_SUBJECT = ?, BOARD_CONTENT = ? WHERE BOARD_NUM = ?";
+		String sql = "update memberboard set BOARD_SUBJECT = ?, BOARD_CONTENT = ? WHERE BOARD_NUM = ?";
 		
 		try{
 			pstmt = con.prepareStatement(sql);
@@ -245,7 +245,7 @@ public class BoardDAO {
 	
 	// 글 삭제
 	public boolean boardDelete(int num){
-		String board_delete_sql = "delete from board where BOARD_num=?";
+		String board_delete_sql = "delete from memberboard where BOARD_num=?";
 		int result = 0;
 		
 		try{
@@ -266,7 +266,7 @@ public class BoardDAO {
 	
 	// 조회수 업데이트
 	public void setReadCountUpdate(int num) throws Exception{
-		String sql = "update board set BOARD_READCOUNT = BOARD_READCOUNT + 1"+
+		String sql = "update memberboard set BOARD_READCOUNT = BOARD_READCOUNT + 1"+
 				"where BOARD_NUM =" +num;
 		try{
 			pstmt = con.prepareStatement(sql);
@@ -277,15 +277,15 @@ public class BoardDAO {
 	}
 	
 	// 글쓴이인지 확인
-	public boolean isBoardWriter(int num, String pass){
-		String board_sql = "select * from board where BOARD_NUM=?";
+	public boolean isBoardWriter(int num, String id){
+		String board_sql = "select * from memberboard where BOARD_NUM=?";
 		try{
 			pstmt = con.prepareStatement(board_sql);
 			pstmt.setInt(1, num);
 			rs = pstmt.executeQuery();
 			rs.next();
 			
-			if(pass.equals(rs.getString("BOARD_PASS"))){
+			if(id.equals(rs.getString("BOARD_ID"))){
 				return true;
 			}
 		} catch(SQLException ex){
