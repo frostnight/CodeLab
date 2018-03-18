@@ -4,6 +4,11 @@
 <%@ page import="net.board.db.*" %>
 
 <%
+
+	String id = null;
+	if(session.getAttribute("id") != null){
+		id = (String)session.getAttribute("id");
+	}
 	List boardList=(List)request.getAttribute("boardlist");
 	int listcount=((Integer)request.getAttribute("listcount")).intValue();
 	int nowpage=((Integer)request.getAttribute("page")).intValue();
@@ -20,10 +25,7 @@
 <body>
 <!-- 게시판 리스트 -->
 
-<table width=50% border="0" cellpadding="0" cellspacing="0">
-<%
-if(listcount > 0){
-%>
+<table width=570 border="0" cellpadding="0" cellspacing="0">
 	<tr align="center" valign="middle">
 		<td colspan="4">MVC 게시판</td>
 		<td align=right>
@@ -110,26 +112,14 @@ if(listcount > 0){
 			<%} %>
 		</td>
 	</tr>
-	<%
-    }
-	else
-	{
-	%>
-	<tr align="center" valign="middle">
-		<td colspan="4">MVC 게시판</td>
-		<td align=right>
-			<font size=2>등록된 글이 없습니다.</font>
-		</td>
-	</tr>
-	<%
-	}
-	%>
 	<tr align="right">
 		<td colspan="5">
+			<%if(id!=null && id.equals("admin")){ %>
+				<a href="./MemberListAction.me">[회원관리]</a>
+			<%} %>
 	   		<a href="./BoardWrite.bo">[글쓰기]</a>
 		</td>
 	</tr>
 </table>
-
 </body>
 </html>

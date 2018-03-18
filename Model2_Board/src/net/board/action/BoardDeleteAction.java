@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import net.board.db.BoardDAO;
 
@@ -14,12 +15,15 @@ public class BoardDeleteAction implements Action{
 		ActionForward forward = new ActionForward();
 		request.setCharacterEncoding("utf-8");
 		
+		HttpSession session = request.getSession();
+		String id = (String)session.getAttribute("id");
+		
 		boolean result = false;
 		boolean usercheck = false;
 		int num = Integer.parseInt(request.getParameter("num"));
 		
 		BoardDAO boarddao = new BoardDAO();
-		usercheck = boarddao.isBoardWriter(num, request.getParameter("BOARD_PASS"));
+		usercheck = boarddao.isBoardWriter(num, id);
 		
 		if(usercheck == false){
 			response.setContentType("text/html;charset=utf-8");

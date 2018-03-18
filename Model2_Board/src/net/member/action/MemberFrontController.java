@@ -7,9 +7,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.board.action.Action;
-import net.board.action.ActionForward;
-
 public class MemberFrontController 
 			extends javax.servlet.http.HttpServlet
 			implements javax.servlet.Servlet{
@@ -24,6 +21,9 @@ public class MemberFrontController
 			Action action = null;
 			
 			if(command.equals("/MemberLogin.me")){
+				forward=new ActionForward();
+				forward.setRedirect(false);
+				forward.setPath("./member/loginForm.jsp");
 				
 			} else if(command.equals("/MemberJoin.me")){
 				forward = new ActionForward();

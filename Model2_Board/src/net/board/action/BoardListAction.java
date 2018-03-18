@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import net.board.db.BoardDAO;
 
@@ -12,6 +13,16 @@ public class BoardListAction implements Action{
 
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		ActionForward forward = new ActionForward();
+		HttpSession session = request.getSession();
+		
+		String id = (String)session.getAttribute("id");
+		if(id==null){
+			forward.setRedirect(true);
+			forward.setPath("./MemberLogin.me");
+			return forward;
+		}
+		
 		BoardDAO boarddao = new BoardDAO();
 		List boardlist = new ArrayList();
 		
@@ -40,7 +51,6 @@ public class BoardListAction implements Action{
 		request.setAttribute("listcount", listcount); 	// 글 수
 		request.setAttribute("boardlist", boardlist);
 		
-		ActionForward forward = new ActionForward();
 		forward.setRedirect(false);
 		forward.setPath("./board/qna_board_list.jsp");
 		return forward;

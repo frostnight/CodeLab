@@ -21,7 +21,7 @@ public class BoardModifyAction implements Action {
 		BoardDAO boarddao = new BoardDAO();
 		BoardBean boarddata = new BoardBean();
 		
-		boolean usercheck = boarddao.isBoardWriter(num, request.getParameter("BOARD_PASS"));
+		boolean usercheck = boarddao.isBoardWriter(num, request.getParameter("BOARD_ID"));
 		
 		if(usercheck == false){
 			response.setContentType("text/html;charset=utf-8");

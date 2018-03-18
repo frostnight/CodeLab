@@ -4,7 +4,7 @@ public class MemberBean {
 
 	private String MEMBER_ID;
 	private String MEMBER_PW;
-	private String MEMEBER_NAME;
+	private String MEMBER_NAME;
 	private int MEMBER_AGE;
 	private String MEMBER_GENDER;
 	private String MEMBER_EMAIL;
@@ -21,11 +21,11 @@ public class MemberBean {
 	public void setMEMBER_PW(String MEMBER_PW) {
 		this.MEMBER_PW = MEMBER_PW;
 	}
-	public String getMEMEBER_NAME() {
-		return MEMEBER_NAME;
+	public String getMEMBER_NAME() {
+		return MEMBER_NAME;
 	}
-	public void setMEMEBER_NAME(String MEMEBER_NAME) {
-		this.MEMEBER_NAME = MEMEBER_NAME;
+	public void setMEMBER_NAME(String MEMBER_NAME) {
+		this.MEMBER_NAME = MEMBER_NAME;
 	}
 	public int getMEMBER_AGE() {
 		return MEMBER_AGE;
