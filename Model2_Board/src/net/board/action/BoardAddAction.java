@@ -31,8 +31,7 @@ public class BoardAddAction implements Action{
 			MultipartRequest multi = null;
 			multi = new MultipartRequest(request, realFolder, fileSize, "utf-8", new DefaultFileRenamePolicy());
 			
-			boarddata.setBOARD_NAME(multi.getParameter("BOARD_NAME"));
-			boarddata.setBOARD_PASS(multi.getParameter("BOARD_PASS"));
+			boarddata.setBOARD_ID(multi.getParameter("BOARD_ID"));
 			boarddata.setBOARD_SUBJECT(multi.getParameter("BOARD_SUBJECT"));
 			boarddata.setBOARD_CONTENT(multi.getParameter("BOARD_CONTENT"));
 			boarddata.setBOARD_FILE(multi.getFilesystemName((String) multi.getFileNames().nextElement()));

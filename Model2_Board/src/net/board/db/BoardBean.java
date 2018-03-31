@@ -5,8 +5,7 @@ import java.util.Date;
 public class BoardBean {
 
 	private int BOARD_NUM;
-	private String BOARD_NAME;
-	private String BOARD_PASS;
+	private String BOARD_ID;
 	private String BOARD_SUBJECT;
 	private String BOARD_CONTENT;
 	private String BOARD_FILE;
@@ -15,23 +14,19 @@ public class BoardBean {
 	private int BOARD_RE_SEQ;
 	private int BOARD_READCOUNT;
 	private Date BOARD_DATE;
+	
 	public int getBOARD_NUM() {
 		return BOARD_NUM;
 	}
 	public void setBOARD_NUM(int bOARD_NUM) {
 		BOARD_NUM = bOARD_NUM;
 	}
-	public String getBOARD_NAME() {
-		return BOARD_NAME;
+	
+	public String getBOARD_ID() {
+		return BOARD_ID;
 	}
-	public void setBOARD_NAME(String bOARD_NAME) {
-		BOARD_NAME = bOARD_NAME;
-	}
-	public String getBOARD_PASS() {
-		return BOARD_PASS;
-	}
-	public void setBOARD_PASS(String bOARD_PASS) {
-		BOARD_PASS = bOARD_PASS;
+	public void setBOARD_ID(String bOARD_ID) {
+		BOARD_ID = bOARD_ID;
 	}
 	public String getBOARD_SUBJECT() {
 		return BOARD_SUBJECT;

@@ -24,6 +24,10 @@
 		<td><input type="password" name="MEMBER_PW"/></td>
 	</tr>
 	<tr>
+		<td>이름:</td>
+		<td><input type="text" name="MEMBER_NAME"/></td>
+	</tr>
+	<tr>
 		<td>나이:</td>
 		<td><input type="text" name="MEMBER_AGE" maxlength=2 size=5 /></td>
 	</tr>
@@ -31,11 +35,11 @@
 		<td>성별:</td>
 		<td>
 			<input type="radio" name="MEMBER_GENDER" value="남" checked/>남자
-			<input type="radio" name="MEMBER_GENDER" value="여자" />여자
+			<input type="radio" name="MEMBER_GENDER" value="여" />여자
 		</td>
 	</tr>
 	<tr>
-		<td>이메이 주소:</td>
+		<td>이메일 주소:</td>
 		<td><input type="text" name="MEMBER_EMAIL" size=30 /></td>
 	</tr>
 	<tr>	

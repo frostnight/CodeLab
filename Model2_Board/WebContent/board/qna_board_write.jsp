@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
-
+<%
+	String id = (String) session.getAttribute("id");
+%>
 <html>
 <head>
 	<title>MVC 게시판</title>
@@ -13,6 +15,7 @@
 <!-- 게시판 등록 -->
 <form action="./BoardAddAction.bo" method="post" 
 	enctype="multipart/form-data" name="boardform">
+<input type="hidden" name="BOARD_ID" value="<%=id %>" >
 <table cellpadding="0" cellspacing="0">
 	<tr align="center" valign="middle">
 		<td colspan="5">MVC 게시판</td>
@@ -22,11 +25,12 @@
 			<div align="center">글쓴이</div>
 		</td>
 		<td>
-			<input name="BOARD_NAME" type="text" size="10" maxlength="10" 
-				value=""/>
+			<%=id %>
+			<!-- <input name="BOARD_NAME" type="text" size="10" maxlength="10" 
+				value=""/> -->
 		</td>
 	</tr>
-	<tr>
+	<!-- <tr>
 		<td style="font-family:돋음; font-size:12" height="16">
 			<div align="center">비밀번호</div>
 		</td>
@@ -34,7 +38,7 @@
 			<input name="BOARD_PASS" type="password" size="10" maxlength="10" 
 				value=""/>
 		</td>
-	</tr>
+	</tr> -->
 	<tr>
 		<td style="font-family:돋음; font-size:12" height="16">
 			<div align="center">제 목</div>

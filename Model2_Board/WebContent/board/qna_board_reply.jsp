@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ page import="net.board.db.*" %>
 <%
+	String id = (String)session.getAttribute("id");
 	BoardBean board=(BoardBean)request.getAttribute("boarddata");
 %>
 
@@ -20,7 +21,7 @@
 <input type="hidden" name="BOARD_RE_REF" value="<%=board.getBOARD_RE_REF() %>">
 <input type="hidden" name="BOARD_RE_LEV" value="<%=board.getBOARD_RE_LEV() %>">
 <input type="hidden" name="BOARD_RE_SEQ" value="<%=board.getBOARD_RE_SEQ() %>">
-
+<input type="hidden" name="BOARD_ID" value="<%=id %>">
 <table cellpadding="0" cellspacing="0">
 	<tr align="center" valign="middle">
 		<td colspan="5">MVC 게시판</td>

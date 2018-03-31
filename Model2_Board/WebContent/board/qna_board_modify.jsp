@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ page import="net.board.db.*" %>
 <%
+	String id = (String) session.getAttribute("id");
 	BoardBean board = (BoardBean)request.getAttribute("boarddata");
 %>
 
@@ -18,6 +19,7 @@
 <!-- 게시판 수정 -->
 <form action="BoardModifyAction.bo" method="post" name="modifyform">
 <input type="hidden" name="BOARD_NUM" value=<%=board.getBOARD_NUM() %>>
+<input type="hidden" name="BOARD_ID" value="<%=id %>">
 <table cellpadding="0" cellspacing="0">
 	<tr align="center" valign="middle">
 		<td colspan="5">MVC 게시판</td>

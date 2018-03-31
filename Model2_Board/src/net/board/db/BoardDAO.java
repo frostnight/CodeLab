@@ -52,7 +52,7 @@ public class BoardDAO {
 	// 글 목록 보기
 	public List getBoardList(int page, int limit){
 		StringBuffer sb = new StringBuffer();
-		sb.append(" select * from (select rownum rnum, BOARD_NUM, BOARD_NAME,");
+		sb.append(" select * from (select rownum rnum, BOARD_NUM,");
 		sb.append(" BOARD_SUBJECT, BOARD_CONTENT, BOARD_FILE, BOARD_RE_REF,BOARD_RE_LEV,");
 		sb.append(" BOARD_RE_SEQ, BOARD_READCOUNT, BOARD_DATE from (select * from memberboard order by");
 		sb.append(" BOARD_RE_REF desc, BOARD_RE_SEQ asc)) where rnum >= ? and rnum <=?");
@@ -65,12 +65,12 @@ public class BoardDAO {
 			pstmt = con.prepareStatement(sb.toString());
 			pstmt.setInt(1, startrow);
 			pstmt.setInt(2, endrow);
+			System.out.println(sb.toString());
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()){
 				BoardBean board = new BoardBean();
 				board.setBOARD_NUM(rs.getInt("BOARD_NUM"));
-				board.setBOARD_NAME(rs.getString("BOARD_NAME"));
 				board.setBOARD_SUBJECT(rs.getString("BOARD_SUBJECT"));
 				board.setBOARD_CONTENT(rs.getString("BOARD_CONTENT"));
 				board.setBOARD_FILE(rs.getString("BOARD_FILE"));
@@ -103,7 +103,6 @@ public class BoardDAO {
 			if(rs.next()){
 				board = new BoardBean();
 				board.setBOARD_NUM(rs.getInt("BOARD_NUM"));
-				board.setBOARD_NAME(rs.getString("BOARD_NAME"));
 				board.setBOARD_SUBJECT(rs.getString("BOARD_SUBJECT"));
 				board.setBOARD_CONTENT(rs.getString("BOARD_CONTENT"));
 				board.setBOARD_FILE(rs.getString("BOARD_FILE"));
@@ -139,21 +138,20 @@ public class BoardDAO {
 			}
 			
 			StringBuffer sb = new StringBuffer();
-			sb.append("insert into memberboard(BOARD_NUM, BOARD_NAME, BOARD_PASS, BOARD_SUBJECT,");
+			sb.append("insert into memberboard(BOARD_NUM, BOARD_ID, BOARD_SUBJECT,");
 			sb.append("BOARD_CONTENT, BOARD_FILE,BOARD_RE_REF,BOARD_RE_LEV,BOARD_RE_SEQ,BOARD_READCOUNT");
-			sb.append(",BOARD_DATE) values(?,?,?,?,?,?,?,?,?,?,sysdate)");
+			sb.append(",BOARD_DATE) values(?,?,?,?,?,?,?,?,?,sysdate)");
 			
 			pstmt = con.prepareStatement(sb.toString());
 			pstmt.setInt(1, num);
-			pstmt.setString(2, board.getBOARD_NAME());
-			pstmt.setString(3, board.getBOARD_PASS());
-			pstmt.setString(4, board.getBOARD_SUBJECT());
-			pstmt.setString(5, board.getBOARD_CONTENT());
-			pstmt.setString(6, board.getBOARD_FILE());
-			pstmt.setInt(7, num);
+			pstmt.setString(2, board.getBOARD_ID());
+			pstmt.setString(3, board.getBOARD_SUBJECT());
+			pstmt.setString(4, board.getBOARD_CONTENT());
+			pstmt.setString(5, board.getBOARD_FILE());
+			pstmt.setInt(6, num);
+			pstmt.setInt(7, 0);
 			pstmt.setInt(8, 0);
 			pstmt.setInt(9, 0);
-			pstmt.setInt(10, 0);
 			
 			result = pstmt.executeUpdate();
 			if(result ==0) return false;
@@ -202,8 +200,6 @@ public class BoardDAO {
 			
 			pstmt = con.prepareStatement(sb.toString());
 			pstmt.setInt(1, num);
-			pstmt.setString(2, board.getBOARD_NAME());
-			pstmt.setString(3, board.getBOARD_PASS());
 			pstmt.setString(4, board.getBOARD_SUBJECT());
 			pstmt.setString(5, board.getBOARD_CONTENT());
 			pstmt.setString(6, "");

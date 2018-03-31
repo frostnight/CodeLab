@@ -79,7 +79,7 @@
 		</td>
 		
 		<td style="font-family:Tahoma;font-size:10pt;">
-			<div align="center"><%=bl.getBOARD_NAME() %></div>
+			<div align="center"><%=bl.getBOARD_ID() %></div>
 		</td>
 		<td style="font-family:Tahoma;font-size:10pt;">
 			<div align="center"><%=bl.getBOARD_DATE() %></div>

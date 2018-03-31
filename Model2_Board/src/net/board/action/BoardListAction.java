@@ -35,7 +35,6 @@ public class BoardListAction implements Action{
 		
 		int listcount = boarddao.getListCount();
 		boardlist = boarddao.getBoardList(page, limit);
-		
 		// 총 페이지 수
 		int maxpage = (int)((double)listcount / limit + 0.95);
 		// 현재 페이지에 보여줄 시작 페이지 수(1, 11, 21 등...)

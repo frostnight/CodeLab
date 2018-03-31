@@ -57,16 +57,17 @@ public class MemberDAO {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, member.getMEMBER_ID());
 			pstmt.setString(2, member.getMEMBER_PW());
-			pstmt.setString(3, member.getMEMEBER_NAME());
+			pstmt.setString(3, member.getMEMBER_NAME());
 			pstmt.setInt(4, member.getMEMBER_AGE());
 			pstmt.setString(5, member.getMEMBER_GENDER());
 			pstmt.setString(6, member.getMEMBER_EMAIL());
-			
 			result = pstmt.executeUpdate();
 			
 			if(result != 0){
 				return true;
 			}
+		} catch(SQLException e) {
+			e.printStackTrace();
 		} catch (Exception ex){
 			System.out.print("joinMember 에러");
 		} finally{
@@ -91,7 +92,7 @@ public class MemberDAO {
 				MemberBean mb = new MemberBean();
 				mb.setMEMBER_ID(rs.getString("MEMBER_ID"));
 				mb.setMEMBER_PW(rs.getString("MEMBER_PW"));
-				mb.setMEMEBER_NAME(rs.getString("MEMBER_NAME"));
+				mb.setMEMBER_NAME(rs.getString("MEMBER_NAME"));
 				mb.setMEMBER_AGE(rs.getInt("MEMBER_AGE"));
 				mb.setMEMBER_GENDER(rs.getString("MEMBER_GENDER"));
 				mb.setMEMBER_EMAIL(rs.getString("MEMBER_EMAIL"));
@@ -122,7 +123,7 @@ public class MemberDAO {
 			if(rs.next()){
 				mb.setMEMBER_ID(rs.getString("MEMBER_ID"));
 				mb.setMEMBER_PW(rs.getString("MEMBER_PW"));
-				mb.setMEMEBER_NAME(rs.getString("MEMBER_NAME"));
+				mb.setMEMBER_NAME(rs.getString("MEMBER_NAME"));
 				mb.setMEMBER_AGE(rs.getInt("MEMBER_AGE"));
 				mb.setMEMBER_GENDER(rs.getString("MEMBER_GENDER"));
 				mb.setMEMBER_EMAIL(rs.getString("MEMBER_EMAIL"));

@@ -30,35 +30,35 @@ public class MemberFrontController
 				forward.setRedirect(false);
 				forward.setPath("./member/joinForm.jsp");
 				
-			} else if(command.equals("./MemberLoginAction.me")){
+			} else if(command.equals("/MemberLoginAction.me")){
 				action = new MemberLoginAction();
 				try{
 					forward = action.execute(request, response);
 				} catch(Exception e){
 					e.printStackTrace();
 				}
-			} else if(command.equals("./MemberJoinAction.me")){
+			} else if(command.equals("/MemberJoinAction.me")){
 				action = new MemberJoinAction();
 				try{
 					forward = action.execute(request, response);
 				} catch(Exception e){
 					e.printStackTrace();
 				}
-			} else if(command.equals("./MemberListAction.me")){
+			} else if(command.equals("/MemberListAction.me")){
 				action = new MemberListAction();
 				try{
 					forward = action.execute(request, response);
 				} catch(Exception e){
 					e.printStackTrace();
 				}
-			} else if(command.equals("./MemberViewAction.me")){
+			} else if(command.equals("/MemberViewAction.me")){
 				action = new MemberViewAction();
 				try{
 					forward = action.execute(request, response);
 				} catch(Exception e){
 					e.printStackTrace();
 				}
-			} else if(command.equals("./MemberDeleteAction.me")){
+			} else if(command.equals("/MemberDeleteAction.me")){
 				action = new MemberDeleteAction();
 				try{
 					forward = action.execute(request, response);

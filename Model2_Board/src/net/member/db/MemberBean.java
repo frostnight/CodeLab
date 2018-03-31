@@ -45,5 +45,11 @@ public class MemberBean {
 	public void setMEMBER_EMAIL(String MEMBER_EMAIL) {
 		this.MEMBER_EMAIL = MEMBER_EMAIL;
 	}
+	@Override
+	public String toString() {
+		return "MemberBean [MEMBER_ID=" + MEMBER_ID + ", MEMBER_PW=" + MEMBER_PW + ", MEMBER_NAME=" + MEMBER_NAME
+				+ ", MEMBER_AGE=" + MEMBER_AGE + ", MEMBER_GENDER=" + MEMBER_GENDER + ", MEMBER_EMAIL=" + MEMBER_EMAIL
+				+ "]";
+	}
 	
 }
