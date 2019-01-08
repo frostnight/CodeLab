@@ -1,6 +1,7 @@
 package level1;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -35,35 +36,62 @@ public class IncompletePlayer {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String[] participant = {"mislav", "stanko", "mislav", "ana", "sadasd", "abcdas", "mislav"};
-		String[] completion = {"stanko", "ana", "mislav", "sadasd", "sadasd", "abcdas"};
+		/*String[] participant = {"mislav", "stanko", "mislav", "ana"};
+		String[] completion = {"stanko", "ana", "mislav"};*/
+		String[] participant = {"mislav", "stanko", "mislav", "ana"};
+		String[] completion = {"stanko", "ana", "mislav"};
+		/*String[] participant = {"leo", "kiki", "eden"};
+		String[] completion = {"eden", "kiki"};*/
+		long start_time = System.currentTimeMillis();
 		System.out.println(solution(participant, completion));
+		long end_time = System.currentTimeMillis();
+		System.out.println("실행시간 >>"+ (end_time - start_time) + "ms");
 	}
 	
 	public static String solution(String[] participant, String[] completion) {
 		String answer = "";
-		Map<String, Integer> completeMap = new HashMap<String, Integer>();
-		for(String completePlayer : completion){
-			completeMap.put(completePlayer, 0);	
+		Map<String, Integer> completionMap = new HashMap<>();
+		Map<String, Integer> participantMap = new HashMap<>();
+		Iterator<String> it = null;
+		// 완주자 맵 완성
+		for(String completion_str : completion){
+			if(completionMap.containsKey(completion_str)){
+				int cnt = completionMap.get(completion_str);
+				completionMap.put(completion_str, cnt+1);
+			} else {
+				completionMap.put(completion_str, 1);
+			}
 		}
-		
-		System.out.println(completeMap);
-		String duplicateName = "";
-		for(String player : participant){
-			if(completeMap.containsKey(player)){
-				if(completeMap.get(player) > 1){
-					duplicateName = player;
+
+		// 완주자 비교
+		boolean completionMapCheck = false;
+		for(String participant_str : participant){
+			if(completionMap.containsKey(participant_str)){
+				if(participantMap.containsKey(participant_str)){
+					int cnt = participantMap.get(participant_str);
+					participantMap.put(participant_str, cnt+1);
 				} else {
-					completeMap.put(player, completeMap.get(player) + 1);
+					participantMap.put(participant_str, 1);
 				}
 			} else {
-				answer = player;
+				completionMapCheck = true;
+				answer = participant_str;
 				break;
 			}
 		}
 		
-		System.out.println(completeMap);
-
+		if(!completionMapCheck){
+			it = completionMap.keySet().iterator();
+			while(it.hasNext()){
+				String it_str = it.next();
+				int comp_duplicate_cnt = completionMap.get(it_str);
+				int part_duplicate_cnt = participantMap.get(it_str);
+				if(part_duplicate_cnt != comp_duplicate_cnt) {
+					answer = it_str;
+					break;
+				}
+			}
+		}
        
         return answer;
     }
