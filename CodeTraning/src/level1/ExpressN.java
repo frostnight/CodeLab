@@ -1,5 +1,10 @@
 package level1;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * 문제 설명
 아래와 같이 5와 사칙연산만으로 12를 표현할 수 있습니다.
@@ -24,47 +29,112 @@ N	number	return
  *
  */
 public class ExpressN {
-
+	
+	Map<String, Integer> memo = new HashMap<>();
+	Map<String, String> expressMemo = new HashMap<>();
+	List<Integer> calcMemoList = new ArrayList<>();
+	
 	public static void main(String[] args){
 		ExpressN en = new ExpressN();
 		System.out.println(en.solution(5, 12));
 	}
 	
 	public int solution(int N, int number){
-		int answer = 0;
 		
-		int LCM = getLCM(N, number);
+		int count = 1;
 		
-		if(LCM == number){
-			
-		} else {
-			
+		if( N == number ){
+			return count;
 		}
 		
+		count ++;
 		
-		return answer;
+		// 초기 값 세팅
+		int calc = N + N;
+		String key = String.valueOf(calc);
+		
+		if(calc != number){
+			memo.put(key, count);
+			calcMemoList.add(calc);
+			expressMemo.put(key+",+", String.valueOf(N) + "+" + String.valueOf(N));
+		} else {
+			return count;
+		}
+		
+		calc = N - N;
+		key = String.valueOf(calc);
+		
+		if(calc != number){
+			memo.put(key, count);
+			calcMemoList.add(calc);
+			expressMemo.put(key+",-", String.valueOf(N) + "-" + String.valueOf(N));
+		} else {
+			return -1;
+		}
+		
+		calc = N * N;
+		key = String.valueOf(calc);
+		
+		if(calc != number){
+			memo.put(key, count);
+			calcMemoList.add(calc);
+			expressMemo.put(key+",*", String.valueOf(N) + "*" + String.valueOf(N));
+		} else {
+			return count;
+		}
+		
+		calc = N / N;
+		key = String.valueOf(calc);
+		
+		if(calc != number){
+			memo.put(key, count);
+			calcMemoList.add(calc);
+			expressMemo.put(key+",/", String.valueOf(N) + "/" + String.valueOf(N));
+		} else {
+			return count;
+		}
+		
+		calc = Integer.parseInt(String.valueOf(N) + String.valueOf(N));
+		key = String.valueOf(calc);
+		
+		if(calc != number){
+			memo.put(key, count);
+			calcMemoList.add(calc);
+			expressMemo.put(key+",double", String.valueOf(N) + String.valueOf(N));
+		} else {
+			return count;
+		}
+		
+		while(count < 9){
+			
+			for(int i=0; i < calcMemoList.size(); i++){
+				int memo_calc = calcMemoList.get(i);
+				
+				// sum + N
+				calc = memo_calc + N;
+				if(calc == number){
+					count++;
+					break;
+				} else {
+					key = String.valueOf(calc);
+					if(!memo.containsKey(key)){
+						memo.put(key, count+1);
+						if(!calcMemoList.contains(calc)){
+							calcMemoList.add(calc);	
+						}
+						expressMemo.put(key+",double", String.valueOf(N) + String.valueOf(N));
+					} else {
+						if(calcMemoList.contains(calc)){
+							calcMemoList.remove(calc);	
+						}
+					}
+				}
+			}
+		}
+		
+		System.out.println("memo>>"+memo.toString());
+		System.out.println("expressMemo>>"+expressMemo.toString());
+		return count;
 	}
 	
-	public int getLCM(int val1, int val2){
-		
-		int min = val1;
-		int max = val2;
-		int LCM = 0;
-		int rs = 1;
-		
-		if(val2 < val1){
-			max = val1;
-			min = val2;
-		}
-		
-		while(rs > 0){
-			rs = max % min;
-			max = min;
-			min = rs;
-		}
-		
-		LCM = val1 * val2 / max;
-
-		return LCM;
-	}
 }
