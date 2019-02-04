@@ -30,9 +30,10 @@ N	number	return
  */
 public class ExpressN {
 	
-	Map<String, Integer> memo = new HashMap<>();
-	Map<String, String> expressMemo = new HashMap<>();
-	List<Integer> calcMemoList = new ArrayList<>();
+	Map<Integer, Integer> tierMap = new HashMap<>();
+	Map<Integer, String> operatorMap = new HashMap<>();
+	List<Integer> calcList = new ArrayList<>();
+	int tier = 1;
 	
 	public static void main(String[] args){
 		ExpressN en = new ExpressN();
@@ -41,100 +42,75 @@ public class ExpressN {
 	
 	public int solution(int N, int number){
 		
-		int count = 1;
+		int result = -1;
+		int temp_calc = 0;
+		List<Integer> tempList = null;
 		
-		if( N == number ){
-			return count;
+		if(N == number){
+			return tier;
 		}
 		
-		count ++;
+		calcList.add(N);
+		tier++;
 		
-		// 초기 값 세팅
-		int calc = N + N;
-		String key = String.valueOf(calc);
-		
-		if(calc != number){
-			memo.put(key, count);
-			calcMemoList.add(calc);
-			expressMemo.put(key+",+", String.valueOf(N) + "+" + String.valueOf(N));
-		} else {
-			return count;
-		}
-		
-		calc = N - N;
-		key = String.valueOf(calc);
-		
-		if(calc != number){
-			memo.put(key, count);
-			calcMemoList.add(calc);
-			expressMemo.put(key+",-", String.valueOf(N) + "-" + String.valueOf(N));
-		} else {
-			return -1;
-		}
-		
-		calc = N * N;
-		key = String.valueOf(calc);
-		
-		if(calc != number){
-			memo.put(key, count);
-			calcMemoList.add(calc);
-			expressMemo.put(key+",*", String.valueOf(N) + "*" + String.valueOf(N));
-		} else {
-			return count;
-		}
-		
-		calc = N / N;
-		key = String.valueOf(calc);
-		
-		if(calc != number){
-			memo.put(key, count);
-			calcMemoList.add(calc);
-			expressMemo.put(key+",/", String.valueOf(N) + "/" + String.valueOf(N));
-		} else {
-			return count;
-		}
-		
-		calc = Integer.parseInt(String.valueOf(N) + String.valueOf(N));
-		key = String.valueOf(calc);
-		
-		if(calc != number){
-			memo.put(key, count);
-			calcMemoList.add(calc);
-			expressMemo.put(key+",double", String.valueOf(N) + String.valueOf(N));
-		} else {
-			return count;
-		}
-		
-		while(count < 9){
+		while(true){
+			if(tier == 9){
+				break;
+			}
 			
-			for(int i=0; i < calcMemoList.size(); i++){
-				int memo_calc = calcMemoList.get(i);
+			int listSize = calcList.size();
+			tempList = new ArrayList<>();
+			
+			for(int i=0; i < listSize; i++){
+				int calc = calcList.get(i);
 				
-				// sum + N
-				calc = memo_calc + N;
-				if(calc == number){
-					count++;
-					break;
+				temp_calc = calc + N;
+				// number와 비교
+				if(temp_calc == number){
+					return tier;
+				}
+				tempList = checkMemo(tempList, temp_calc);
+				
+				temp_calc = calc * N;
+				// number와 비교
+				if(temp_calc == number){
+					return tier;
+				}
+				tempList = checkMemo(tempList, temp_calc);
+				
+				temp_calc = calc / N;
+				// number와 비교
+				if(temp_calc == number){
+					return tier;
+				}
+				tempList = checkMemo(tempList, temp_calc);
+				
+				temp_calc = calc - N;
+				// number와 비교
+				if(temp_calc == number){
+					return tier;
+				}
+				tempList = checkMemo(tempList, temp_calc);
+				
+				if(tier == 2){
+					temp_calc = calc * 11;
 				} else {
-					key = String.valueOf(calc);
-					if(!memo.containsKey(key)){
-						memo.put(key, count+1);
-						if(!calcMemoList.contains(calc)){
-							calcMemoList.add(calc);	
-						}
-						expressMemo.put(key+",double", String.valueOf(N) + String.valueOf(N));
-					} else {
-						if(calcMemoList.contains(calc)){
-							calcMemoList.remove(calc);	
-						}
-					}
+					temp_calc = calc;
 				}
 			}
+			
+			
+			tier++;
 		}
 		
-		System.out.println("memo>>"+memo.toString());
-		System.out.println("expressMemo>>"+expressMemo.toString());
-		return count;
+		return result;
 	}
 	
+	private List<Integer> checkMemo(List<Integer> tempList, int temp_calc){
+		if(!tierMap.containsKey(temp_calc)){
+			tierMap.put(temp_calc, tier);
+			tempList.add(temp_calc);
+		}
+		return tempList;
+	}
 }
