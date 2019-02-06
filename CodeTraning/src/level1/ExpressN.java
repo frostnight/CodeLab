@@ -30,75 +30,201 @@ N	number	return
  */
 public class ExpressN {
 	
-	Map<Integer, Integer> tierMap = new HashMap<>();
-	Map<Integer, String> operatorMap = new HashMap<>();
-	List<Integer> calcList = new ArrayList<>();
-	int tier = 1;
-	
 	public static void main(String[] args){
 		ExpressN en = new ExpressN();
-		System.out.println(en.solution(5, 12));
+		System.out.println("result>>"+en.solution(5, 87));
 	}
 	
 	public int solution(int N, int number){
 		
+		// 각 연산값들의 TIER(N의 개수)
+		Map<Integer, Integer> tierMap = new HashMap<>();
+		// 계산할 마지막 TIER의 연산값
+		List<Integer> calcList = new ArrayList<>();
+		int tier = 1;
 		int result = -1;
 		int temp_calc = 0;
-		List<Integer> tempList = null;
+		List<Integer> tempList = new ArrayList<>();
+		int listSize = 0;
 		
 		if(N == number){
 			return tier;
 		}
 		
+		// 초기에 자기자신을 세팅
 		calcList.add(N);
+		tierMap.put(N, tier);
 		tier++;
 		
 		while(true){
-			if(tier == 9){
+			// TIER가 8을 크면 프로세스 중지
+			if(tier > 8){
+				result = -1;
 				break;
 			}
 			
-			int listSize = calcList.size();
-			tempList = new ArrayList<>();
+			listSize = calcList.size();
+			tempList.clear();
+			temp_calc = 0;
 			
+			// 계산할 값 리스트
 			for(int i=0; i < listSize; i++){
 				int calc = calcList.get(i);
 				
-				temp_calc = calc + N;
-				// number와 비교
-				if(temp_calc == number){
+				temp_calc = commonCalculations("+", calc, N);
+				if(temp_calc == number) {
 					return tier;
+				} else if(temp_calc > 0) {
+					tempList = checkMemo(tier, tierMap, tempList, temp_calc);
 				}
-				tempList = checkMemo(tempList, temp_calc);
 				
-				temp_calc = calc * N;
-				// number와 비교
-				if(temp_calc == number){
+				temp_calc = commonCalculations("*", calc, N);
+				if(temp_calc == number) {
 					return tier;
+				} else if(temp_calc > 0) {
+					tempList = checkMemo(tier, tierMap, tempList, temp_calc);
 				}
-				tempList = checkMemo(tempList, temp_calc);
 				
-				temp_calc = calc / N;
-				// number와 비교
-				if(temp_calc == number){
+				temp_calc = commonCalculations("-", calc, N);
+				if(temp_calc == number) {
 					return tier;
+				} else if(temp_calc > 0) {
+					tempList = checkMemo(tier, tierMap, tempList, temp_calc);
 				}
-				tempList = checkMemo(tempList, temp_calc);
 				
-				temp_calc = calc - N;
-				// number와 비교
-				if(temp_calc == number){
+				temp_calc = commonCalculations("/", calc, N);
+				if(temp_calc == number) {
 					return tier;
+				} else if(temp_calc > 0) {
+					tempList = checkMemo(tier, tierMap, tempList, temp_calc);
 				}
-				tempList = checkMemo(tempList, temp_calc);
 				
 				if(tier == 2){
-					temp_calc = calc * 11;
+					// 처음 이중N값은 이렇게 처리
+					temp_calc = N * 11;
+					// number와 비교
+					if(temp_calc == number){
+						return tier;
+					}
+					tempList = checkMemo(tier, tierMap, tempList, temp_calc);
+					
 				} else {
-					temp_calc = calc;
+					// 그뒤 이중N값은 똑같이 처리한다 단 N의 개수가 1개 더 많으므로 +1을 해준다.
+					temp_calc = commonCalculations("+", calc, N * 11);
+					if(temp_calc == number) {
+						if(tier + 1 > 8) {
+							return -1;
+						} else {
+							return tier + 1;	
+						}
+						
+					} else if(temp_calc > 0) {
+						tempList = checkMemo(tier + 1, tierMap, tempList, temp_calc);
+					}
+
+					temp_calc = commonCalculations("*", calc, N * 11);
+					if(temp_calc == number) {
+						if(tier + 1 > 8) {
+							return -1;
+						} else {
+							return tier + 1;	
+						}
+					} else if(temp_calc > 0) {
+						tempList = checkMemo(tier + 1, tierMap, tempList, temp_calc);
+					}
+					
+					temp_calc = commonCalculations("/", calc, N * 11);
+					if(temp_calc == number) {
+						if(tier + 1 > 8) {
+							return -1;
+						} else {
+							return tier + 1;	
+						}
+					} else if(temp_calc > 0) {
+						tempList = checkMemo(tier + 1, tierMap, tempList, temp_calc);
+					}
+					
+					temp_calc = commonCalculations("-", calc, N * 11);
+					if(temp_calc == number) {
+						if(tier + 1 > 8) {
+							return -1;
+						} else {
+							return tier + 1;	
+						}
+					} else if(temp_calc > 0) {
+						tempList = checkMemo(tier + 1, tierMap, tempList, temp_calc);
+					}
+					
 				}
+				/*
+				if(tier == 3) {
+					temp_calc = N * 111;
+					// number와 비교
+					if(temp_calc == number){
+						return tier;
+					}
+					tempList = checkMemo(tier, tierMap, tempList, temp_calc);
+				} else if(tier > 3){
+					temp_calc = commonCalculations("+", calc, N * 111);
+					if(temp_calc == number) {
+						if(tier + 2 > 8) {
+							continue;
+						} else {
+							return tier + 2;	
+						}
+					} else if(temp_calc > 0) {
+						tempList = checkMemo(tier + 2, tierMap, tempList, temp_calc);
+					}
+
+					temp_calc = commonCalculations("*", calc, N * 111);
+					if(temp_calc == number) {
+						if(tier + 2 > 8) {
+							continue;
+						} else {
+							return tier + 2;	
+						}
+					} else if(temp_calc > 0) {
+						tempList = checkMemo(tier + 2, tierMap, tempList, temp_calc);
+					}
+					
+					temp_calc = commonCalculations("/", calc, N * 111);
+					if(temp_calc == number) {
+						if(tier + 2 > 8) {
+							continue;
+						} else {
+							return tier + 2;	
+						}
+					} else if(temp_calc > 0) {
+						tempList = checkMemo(tier + 2, tierMap, tempList, temp_calc);
+					}
+					
+					temp_calc = commonCalculations("-", calc, N * 111);
+					if(temp_calc == number) {
+						if(tier + 2 > 8) {
+							continue;
+						} else {
+							return tier + 2;	
+						}
+					} else if(temp_calc > 0) {
+						tempList = checkMemo(tier + 2, tierMap, tempList, temp_calc);
+					}
+				}*/
+				System.out.println("tier>>"+tier);
+				System.out.println("calcList>>"+calcList);
+				System.out.println("tempList>>"+tempList);
+				System.out.println("tierMap>>"+tierMap);
+				System.out.println("=======");
 			}
+			System.out.println("****");
+			/*System.out.println(calcList);
+			System.out.println(tempList);
+			System.out.println(tierMap);
+			System.out.println("=======");*/
+			// 반복문 끝
 			
+			// 계산이 끝나면 다시 최종 TIER연산값으로 리스트를 생성한다.
+			calcList.clear();
+			calcList.addAll(tempList);
 			
 			tier++;
 		}
@@ -106,11 +232,28 @@ public class ExpressN {
 		return result;
 	}
 	
-	private List<Integer> checkMemo(List<Integer> tempList, int temp_calc){
+	private int commonCalculations(String operator, int pre_operand, int suf_operand) {
+		int temp_calc = 0;
+		
+		if("+".equals(operator)) {
+			temp_calc = pre_operand + suf_operand;
+		} else if("-".equals(operator)) {
+			temp_calc = pre_operand - suf_operand;
+		} else if("*".equals(operator)) {
+			temp_calc = pre_operand * suf_operand;
+		} else if("/".equals(operator)) {
+			temp_calc = pre_operand / suf_operand;
+		}
+				
+		return temp_calc;
+	}
+	
+	private List<Integer> checkMemo(int tier, Map<Integer, Integer> tierMap, List<Integer> tempList, int temp_calc) {
 		if(!tierMap.containsKey(temp_calc)){
 			tierMap.put(temp_calc, tier);
 			tempList.add(temp_calc);
 		}
 		return tempList;
 	}
+
 }
