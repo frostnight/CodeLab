@@ -40,6 +40,7 @@ public class NewDP {
 		Map<Integer, Integer> tierMap = new HashMap<>();
 		List<Integer> calcList = new ArrayList<>();
 		List<Integer> nextCalcList = new ArrayList<>();
+		List<List<Integer>> tierList = new ArrayList<>();
 		int roopSize = 0;
 		int calc = 0;
 		int num = 0;
@@ -54,6 +55,10 @@ public class NewDP {
 		
 		if(N == number){
 			return tier;
+		}
+		
+		for(int i=0; i < 10; i++){
+			tierList.add(new ArrayList<>());
 		}
 		
 		StringBuffer s_buff = null;
@@ -75,28 +80,28 @@ public class NewDP {
 				
 				// + 연산
 				calc = num + N;
-				if(calc > 0 && checkMemo(tierMap, nextCalcList, number, calc, tier)) {
+				if(calc > 0 && checkMemo(tierList, tierMap, nextCalcList, number, calc, tier)) {
 					result = tier;
 					break;
 				}
 				
 				// - 연산
 				calc = num - N;
-				if(calc > 0 && checkMemo(tierMap, nextCalcList, number, calc, tier)) {
+				if(calc > 0 && checkMemo(tierList, tierMap, nextCalcList, number, calc, tier)) {
 					result = tier;
 					break;
 				}
 				
 				// * 연산
 				calc = num * N;
-				if(calc > 0 && checkMemo(tierMap, nextCalcList, number, calc, tier)) {
+				if(calc > 0 && checkMemo(tierList, tierMap, nextCalcList, number, calc, tier)) {
 					result = tier;
 					break;
 				}
 				
 				// / 연산
 				calc = num / N;
-				if(calc > 0 && checkMemo(tierMap, nextCalcList, number, calc, tier)) {
+				if(calc > 0 && checkMemo(tierList, tierMap, nextCalcList, number, calc, tier)) {
 					result = tier;
 					break;
 				}
@@ -108,15 +113,25 @@ public class NewDP {
 				s_buff.append(String.valueOf(N));
 			}
 			calc = Integer.parseInt(s_buff.toString());
-			nextCalcList.add(calc);
-			tierMap.put(calc, tier);
+			if(calc == number){
+				result = tier;
+				break;
+			} else if(!tierMap.containsKey(calc)){
+				nextCalcList.add(calc);
+				tierMap.put(calc, tier);
+				tierList.get(tier).add(calc);
+			}
 			s_buff = null;
 			
-			System.out.println("tierMap>>"+tierMap);
+			/*System.out.println("tierMap>>"+tierMap);
 			System.out.println("nextCalcList>>"+nextCalcList);
 			System.out.println("calcList>>"+calcList);
 			System.out.println("tier>>"+tier);
-			System.out.println("===========");
+			System.out.println("===========");*/
+			
+			if(tier >=4){
+				//result = tierCalculations(tierMap, tier, number);	
+			}
 			
 			if(result > -1) {
 				break;
@@ -126,13 +141,16 @@ public class NewDP {
 			calcList.clear();
 			calcList.addAll(nextCalcList);
 			
+			System.out.println("tier>>"+tier);
+			System.out.println(tierList);
 			tier++;
 		}
 		
 		return result;
 	}
 
-	private boolean checkMemo(Map<Integer, Integer> tierMap, List<Integer> nextCalcList, int number, int calc, int tier) {
+	private boolean checkMemo(List<List<Integer>> tierList, Map<Integer, Integer> tierMap, List<Integer> nextCalcList
+						, int number, int calc, int tier) {
 		boolean findCheck = false;
 		
 		if(calc == number) {
@@ -140,47 +158,68 @@ public class NewDP {
 		} else if(!tierMap.containsKey(calc)){
 			tierMap.put(calc, tier);
 			nextCalcList.add(calc);
+			tierList.get(tier).add(calc);
 			findCheck = false;
 		}
 		
 		return findCheck;
 	}
 	
-	private void tierCalculations(Map<Integer, Integer> tierMap, int tier) {
+	/*private int tierCalculations(Map<Integer, Integer> tierMap, int tier, int number) {
 		
+		int result = -1;
 		Iterator<Entry<Integer, Integer>> preIterator = tierMap.entrySet().iterator();
 		Iterator<Entry<Integer, Integer>> nextIterator = tierMap.entrySet().iterator();
 		Entry<Integer, Integer> preSet = null;
 		Entry<Integer, Integer> nextSet = null;
 		int pre_tier = 2;
 		int next_tier = tier - 2;
-		
+		int calc = 0;
+		System.out.println("!!!!!!!!!!!!");
+		System.out.println("tier>>"+tier);
 		while(preIterator.hasNext()) {
-			if(pre_tier <= (tier-2)) {
+			
+			if(pre_tier > (tier-2)) {
 				break;
 			}
+			next_tier = tier - 2;
 			preSet = preIterator.next();
 			if(preSet.getValue() == pre_tier) {
 				while(nextIterator.hasNext()) {
-					if(next_tier > 1) {
+					if(next_tier < 2) {
 						break;
 					}
 					nextSet = nextIterator.next();
 					if(nextSet.getValue() == next_tier) {
-						
+						calc = preSet.getKey() + nextSet.getKey();
+						if(number == calc){
+							result = pre_tier + next_tier;
+							break;
+						}
+						calc = preSet.getKey() - nextSet.getKey();
+						if(number == calc){
+							result = pre_tier - next_tier;
+							break;
+						}
+						calc = preSet.getKey() * nextSet.getKey();
+						if(number == calc){
+							result = pre_tier - next_tier;
+							break;
+						}
+						calc = preSet.getKey() / nextSet.getKey();
+						if(number == calc){
+							result = pre_tier - next_tier;
+							break;
+						}
 					}
 					next_tier--;
 				}
+				if(result > -1) break;
 			}
 			pre_tier++;
 		}
 		
-		for(int i=2; i <= (tier - 2); i++) {
-			
-			for(int j=(tier - 2); j > 1; j--) {
-				
-			}
-		}
-	}
+		return result;
+	}*/
 
 }
