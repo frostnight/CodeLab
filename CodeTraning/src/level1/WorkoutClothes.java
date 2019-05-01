@@ -1,5 +1,8 @@
 package level1;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 점심시간에 도둑이 들어, 일부 학생이 체육복을 도난당했습니다.
  * 다행히 여벌 체육복이 있는 학생이 이들에게 체육복을 빌려주려 합니다. 
@@ -23,16 +26,53 @@ public class WorkoutClothes {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		WorkoutClothes wc = new WorkoutClothes();
-		int n = 5;
-		int[] lost = {2,4};
-		int[] reserve = {1,3,5};
+		int n = 24;
+		int[] lost = {12, 13, 16, 17, 19, 20, 21, 22};
+		int[] reserve = {1,22, 16, 18, 9, 10};
+		//int[] lost = {3,4};
+		//int[] reserve = {4,5};
 		
 		System.out.println(wc.solution(n, lost, reserve));
 	}
 	
 	public int solution(int n, int[] lost, int[] reserve) {
         int answer = 0;
+        
+        List<Integer> lostList = new ArrayList<Integer>();
+        List<Integer> reserveList = new ArrayList<Integer>();
+        List<Integer> completeList = new ArrayList<Integer>();
+        
+        // 여벌 있는 사람 리스트
+        for(int i = 0; i < reserve.length; i++){
+        	reserveList.add(reserve[i]);
+        }
+        
+        // 여벌 있지만 잃어버린 사람
+        for(int i = 0; i < lost.length; i++){
+        	int search_idx = reserveList.indexOf(lost[i]);
+        	if(search_idx > -1){
+        		reserveList.remove(search_idx);
+        	} else {
+        		lostList.add(lost[i]);
+        	}
+        }
+        
+        for(int i = 0; i < lostList.size(); i++){
+        	int lost_num = lostList.get(i);
+        	
+        	for(int j=0; j < reserveList.size(); j++){
+        		int prefix_reserve = reserveList.get(j) - 1;
+        		int suffix_reserve = reserveList.get(j) + 1;
+        		if(lost_num == prefix_reserve
+            			|| lost_num == suffix_reserve
+            			){
+        			reserveList.remove(j);	
+        			completeList.add(lost_num);
+        			break;
+        		}
+        	}
+        }
+        answer = n - (lostList.size() - completeList.size());
         return answer;
     }
-
 }
